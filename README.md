@@ -30,41 +30,40 @@
 python personal_agent.py [-m MODEL] [--show-memory] [--export-memory FILE] [--import-memory FILE]
 ```
 
-### 2. Ollama CLI (`ollama_cli.py`)
+### 2. Voice Agent (`voice_agent.py`)
 
-CLI агент для работы с моделями Ollama. Настроен для обучения iOS разработке на Swift.
+Голосовой AI-агент с распознаванием речи. Преобразует голосовые команды в текст и отправляет их в LLM для получения ответа.
 
 **Возможности:**
-- Интерактивный чат с моделями
-- Аналитика JSON данных в терминале
-- Естественно-языковые запросы к данным
-- ASCII-визуализация данных
-
-**Команды чата:**
-```
-/help            - справка
-/models          - список доступных моделей
-/switch <model>  - переключить модель
-/clear           - очистить историю диалога
-/history         - показать историю диалога
-/exit            - выход
-```
-
-**Аналитика данных:**
-```
-/load <file> [name]    - загрузить JSON файл
-/data                  - показать загруженные данные
-/schema [name]         - показать структуру данных
-/stats [name]          - статистика по данным
-/analyze <question>    - задать аналитический вопрос
-/chart <bar> <column>  - построить график
-/unload <name>         - выгрузить данные
-```
+- Распознавание речи с микрофона (русский язык)
+- Интеграция с Personal Agent (использует память о пользователе)
+- Текстовый вывод ответов от LLM
+- Режим тестирования на стандартных запросах
 
 **Использование:**
 ```bash
-python ollama_cli.py [-m MODEL] [-p PROMPT] [--list-models] [--temperature T] [--max-tokens N] [--context-window N]
+# Интерактивный голосовой режим
+python voice_agent.py [-m MODEL] [--language LANG]
+
+# Тестирование на стандартных запросах
+python voice_agent.py --test [-m MODEL]
+
+# Тестирование с кастомными запросами
+python voice_agent.py --test --queries "посчитай 2+2" "дай определение"
+
+# Быстрое тестирование без микрофона (текстовый режим)
+python test_voice_agent.py [MODEL]
 ```
+
+**Примеры тестовых запросов:**
+- "посчитай 25 умножить на 17"
+- "дай определение искусственного интеллекта"
+- "скажи анекдот"
+
+**Требования:**
+- Микрофон (для голосового режима)
+- Интернет-соединение (для Google Speech Recognition API)
+- Установленные зависимости: `speechrecognition`, `pyaudio`
 
 ## Установка
 
@@ -75,6 +74,21 @@ python ollama_cli.py [-m MODEL] [-p PROMPT] [--list-models] [--temperature T] [-
 ### Установка зависимостей
 ```bash
 pip install -r requirements.txt
+```
+
+**Примечание для macOS:**
+Если возникают проблемы с установкой `pyaudio`, может потребоваться:
+```bash
+brew install portaudio
+pip install pyaudio
+```
+
+**Примечание для Linux:**
+Может потребоваться установить системные зависимости:
+```bash
+sudo apt-get install portaudio19-dev python3-pyaudio
+# или для Fedora/CentOS:
+sudo yum install portaudio-devel
 ```
 
 ### Запуск Ollama
